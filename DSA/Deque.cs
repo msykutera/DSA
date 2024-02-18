@@ -45,11 +45,9 @@ public class Deque<T> : IEnumerable<T>, ICollection, IEnumerable
         back = new List<T>(temp2);
     }
 
-    public Deque(IEnumerable<T> backCollection) : this(backCollection, null)
-    {
-    }
+    public Deque(IEnumerable<T> backCollection) : this(backCollection, frontCollection: null) { }
 
-    public Deque(IEnumerable<T> backCollection, IEnumerable<T> frontCollection)
+    public Deque(IEnumerable<T> backCollection, IEnumerable<T>? frontCollection)
     {
         if (backCollection == null && frontCollection == null) throw new ArgumentException("Collections cannot both be null");
         front = [];
@@ -157,7 +155,7 @@ public class Deque<T> : IEnumerable<T>, ICollection, IEnumerable
     {
         if (front.Count > frontDeleted)
         {
-            return front[front.Count - 1];
+            return front[^1];
         }
         else if (back.Count > backDeleted)
         {
@@ -173,7 +171,7 @@ public class Deque<T> : IEnumerable<T>, ICollection, IEnumerable
     {
         if (back.Count > backDeleted)
         {
-            return back[back.Count - 1];
+            return back[^1];
         }
         else if (front.Count > frontDeleted)
         {
@@ -191,7 +189,7 @@ public class Deque<T> : IEnumerable<T>, ICollection, IEnumerable
 
         if (front.Count > frontDeleted)
         {
-            result = front[front.Count - 1];
+            result = front[^1];
             front.RemoveAt(front.Count - 1);
         }
         else if (back.Count > backDeleted)
@@ -207,14 +205,13 @@ public class Deque<T> : IEnumerable<T>, ICollection, IEnumerable
         return result;
     }
 
-
     public T PopLast()
     {
         T result;
 
         if (back.Count > backDeleted)
         {
-            result = back[back.Count - 1];
+            result = back[^1];
             back.RemoveAt(back.Count - 1);
         }
         else if (front.Count > frontDeleted)
@@ -266,7 +263,7 @@ public class Deque<T> : IEnumerable<T>, ICollection, IEnumerable
         back.TrimExcess();
     }
 
-    public bool TryPeekFirst(out T item)
+    public bool TryPeekFirst(out T? item)
     {
         if (!IsEmpty)
         {
@@ -278,7 +275,7 @@ public class Deque<T> : IEnumerable<T>, ICollection, IEnumerable
         return false;
     }
 
-    public bool TryPeekLast(out T item)
+    public bool TryPeekLast(out T? item)
     {
         if (!IsEmpty)
         {
@@ -290,7 +287,7 @@ public class Deque<T> : IEnumerable<T>, ICollection, IEnumerable
         return false;
     }
 
-    public bool TryPopFirst(out T item)
+    public bool TryPopFirst(out T? item)
     {
         if (!IsEmpty)
         {
@@ -302,7 +299,7 @@ public class Deque<T> : IEnumerable<T>, ICollection, IEnumerable
         return false;
     }
 
-    public bool TryPopLast(out T item)
+    public bool TryPopLast(out T? item)
     {
         if (!IsEmpty)
         {
