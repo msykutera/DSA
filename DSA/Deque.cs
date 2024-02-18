@@ -127,9 +127,10 @@ public class Deque<T> : IEnumerable<T>, ICollection, IEnumerable
 
     public void CopyTo(T[] array, int index)
     {
-        if (array == null) throw new ArgumentNullException("Array cannot be null");
-        if (index < 0) throw new ArgumentOutOfRangeException("Index cannot be negative");
+        ArgumentNullException.ThrowIfNull(array);
+        ArgumentOutOfRangeException.ThrowIfNegative(index);
         if (array.Length < index + Count) throw new ArgumentException("Index is invalid");
+
         int i = index;
 
         foreach (T item in this)
@@ -229,17 +230,13 @@ public class Deque<T> : IEnumerable<T>, ICollection, IEnumerable
 
     public void Reverse()
     {
-        var temp = front;
-        front = back;
-        back = temp;
-        var temp2 = frontDeleted;
-        frontDeleted = backDeleted;
-        backDeleted = temp2;
+        (back, front) = (front, back);
+        (backDeleted, frontDeleted) = (frontDeleted, backDeleted);
     }
 
     public T[] ToArray()
     {
-        if (Count == 0) return Array.Empty<T>();
+        if (Count == 0) return [];
         T[] result = new T[Count];
         CopyTo(result, 0);
         return result;
